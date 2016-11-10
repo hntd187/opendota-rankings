@@ -1,0 +1,92 @@
+html {
+    font-size: 10px;
+    font-family: monospace;
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+div {
+    display: block;
+}
+
+.bar {
+    position: absolute;
+    background-color: #ddd;
+    height: 6px;
+}
+
+.dot-marker {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #000;
+    border-radius: 10px;
+}
+
+.real-rating {
+    position: absolute;
+    bottom: 12px;
+}
+
+.rating {
+    position: absolute;
+    top: 15px;
+    font-size: 10px;
+}
+
+.rating.real-rating {
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.rating.bottom-rating {
+    left: 0;
+}
+
+.rating.top-rating {
+    left: 87%;
+}
+
+.line-marker {
+    width: 1px;
+    height: 10px;
+    left: 50%;
+    position: absolute;
+    bottom: 1px;
+    z-index: 10000;
+    background-color: #000;
+}
+
+.key-container {
+    color: #333;
+    display: inline-block;
+    font-size: 12px;
+    margin-top: 15px;
+    position: relative;
+    text-align: right;
+    vertical-align: top;
+    width: 200px;
+}
+
+.rd-total-range {
+    left: 5%;
+    top: 2px;
+    width: 90%;
+    opacity: 0.6;
+}
+
+/*
+* width = (rd / default_rd) which is 200 in each direction
+* So, 100 rd would be 100/400 = 25%
+* left and right = ((1 - width) / 2) - 1
+* So, 25% width would be ((1 - 0.75) / 2) - 1 or 37%
+*/
+
+.rd-range {
+    background-color: #ddd;
+    height: 10px;
+    text-align: center;
+    position: absolute;
+}
