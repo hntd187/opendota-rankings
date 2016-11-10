@@ -9,3 +9,5 @@ SELECT COUNT(match_id), team_id FROM team_match GROUP BY team_id ORDER BY count 
 SELECT * FROM leagues WHERE tier='professional' AND leagueid NOT IN (0);
 
 SELECT * FROM teams WHERE team_id NOT IN (0);
+
+select m.match_id, m.start_time, m.leagueid, m.radiant_team_id, m.dire_team_id, m.radiant_win FROM matches m where leagueid=4951;
