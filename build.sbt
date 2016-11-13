@@ -9,6 +9,8 @@ libraryDependencies ++= Seq(
   "org.json4s" %% "json4s-jackson" % "3.5.0",
   "org.scalikejdbc" %% "scalikejdbc" % "2.5.0",
   "org.postgresql" % "postgresql" % "9.4.1212",
-  "org.scalaj" %% "scalaj-http" % "2.3.0"
+  "org.scalaj" %% "scalaj-http" % "2.3.0",
+  "org.apache.logging.log4j" % "log4j-core" % "2.7",
+  "org.apache.logging.log4j" % "log4j-api" % "2.7",
+  "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.7"
 )
-    

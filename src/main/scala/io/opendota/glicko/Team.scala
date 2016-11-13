@@ -1,8 +1,8 @@
 package io.opendota.glicko
 
+import org.slf4j.{Logger, LoggerFactory}
+
 import scala.math.{E => e, _}
-
-
 
 case class Team(rating: Double, rd: Double, sigma: Double = 0.06, tau: Double = 0.5) {
   protected def srating: Double = (rating - 1500) / Team.scale
@@ -12,6 +12,8 @@ case class Team(rating: Double, rd: Double, sigma: Double = 0.06, tau: Double = 
 }
 
 object Team {
+  private val logger: Logger = LoggerFactory.getLogger(getClass)
+
   private val pi2: Double = 9.869604401089358
 
   var scale: Double = 173.7178
@@ -28,6 +30,12 @@ object Team {
   }
 
   def updateRating(team: Team, matches: Seq[Match]): Team = {
+
+    if (matches.isEmpty) {
+      val phistar = sqrt(pow(team.phi, 2) + pow(team.sigma, 2))
+      return team.copy(rd = scale * phistar)
+    }
+
     var vsum: Double = 0.0
     var deltasum: Double = 0.0
     var mupsum: Double = 0.0
@@ -43,8 +51,8 @@ object Team {
     val v: Double = 1.0 / vsum
     val delta: Double = v * deltasum
 
-    println(s"v is $v")
-    println(s"Delta is $delta")
+    logger.info(s"V is $v")
+    logger.info(s"Delta is $delta")
 
     var a: Double = log(pow(team.sigma, 2))
     var b: Double = 0.0
@@ -75,12 +83,10 @@ object Team {
       }
       b = c
       fb = fc
-      println(
-        s"""
-           |f(a) is $fa
-           |f(b) is $fb
-           |f(c) is $fc
-         """.stripMargin)
+      logger.info(s"f(a) is $fa")
+      logger.info(s"f(b) is $fb")
+      logger.info(s"f(c) is $fc")
+
     }
 
     val sigmaPrime: Double = pow(e, a / 2)
@@ -88,25 +94,17 @@ object Team {
     val phiPrime: Double = 1.0 / sqrt((1.0 / pow(phiStar, 2)) + (1.0 / v))
     val muPrime: Double = team.mu + phiPrime * phiPrime * mupsum
 
-    println(
-      s"""
-         |Sigma Prime is $sigmaPrime
-         |Phi Star is $phiStar
-         |Phi Prime is $phiPrime
-         |Mu Prime is $muPrime
-         |A is $a
-         |B is $b
-         |Rating is now ${scale * muPrime + 1500}
-         |Rating Deviation is now ${scale * phiPrime}
-         |Mu is $muPrime
-         |Sigma is $sigmaPrime
-       """.stripMargin)
+    logger.info(s"Sigma Prime is $sigmaPrime")
+    logger.info(s"Phi Star is $phiStar")
+    logger.info(s"Phi Prime is $phiPrime")
+    logger.info(s"Mu Prime is $muPrime")
+    logger.info(s"A is $a")
+    logger.info(s"B is $b")
+    logger.info(s"Rating is now ${scale * muPrime + 1500}")
+    logger.info(s"Rating Deviation is now ${scale * phiPrime}")
+    logger.info(s"Mu is $muPrime")
+    logger.info(s"Sigma is $sigmaPrime")
 
-    Team(
-      rating = scale * muPrime + 1500,
-      rd = scale * phiPrime,
-      sigma = sigmaPrime,
-      tau = tau
-    )
+    Team(rating = scale * muPrime + 1500, rd = scale * phiPrime, sigma = sigmaPrime, tau = tau)
   }
 }
